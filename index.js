@@ -115,12 +115,10 @@ let currentNode = nodesx[0][0];
 currentNode.visit();
 let x = currentNode.x;
 let y = currentNode.y; 
-// load canvas
 
- // set up interval (game loop)
  let cMap = setInterval(createMap, 1000 / FPS);
  let sMap = null;
- // ball starting position
+
  bx = canvas.width / 2;
  by = canvas.height / 2;
  
@@ -190,18 +188,14 @@ function drawMap(){
             }
         })
     })
-    clearInterval(dMap);
+    //clearInterval(dMap);
 }
- // update function
  function createMap() {
-     currentNode = move(currentNode);
-    //items.forEach((item) => console.log(item.textContent));
+    currentNode = move(currentNode);
+    context.fillStyle = backColor;
+    context.fillRect(0, 0, canvas.width, canvas.height);
     
-     // draw background and ball
-     context.fillStyle = backColor;
-     context.fillRect(0, 0, canvas.width, canvas.height);
-     /*context.fillStyle = "white";
-     context.fillRect(bx - bs / 2, by - bs / 2, bs, bs);*/
+    
     nodesx.forEach(nodesy => {
         nodesy.forEach(node =>{
             if (node!=null){
@@ -209,6 +203,7 @@ function drawMap(){
             }
         })
     })
+    
     nodesx.forEach(nodesy => {
         nodesy.forEach(node =>{
             if (node!=null){
