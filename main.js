@@ -190,6 +190,7 @@ function drawMap(){
             }
         })
     })
+    clearInterval(dMap);
 }
  // update function
  function createMap() {
@@ -229,9 +230,6 @@ function drawNode(event){
     y = event.clientY-rect.top;
     x = Math.floor(x/boxSize);
     y = Math.floor(y/boxSize);
-    nodesx[x][y].color = "white";
-    nodesx[x][y].draw();
-    startEnd=nodesx[x][y];
     currentNode = nodesx[0][0];
     nodesx.forEach(nodesy => {
         nodesy.forEach(node =>{
@@ -240,6 +238,10 @@ function drawNode(event){
             }
         })
     })
+    nodesx[x][y].color = "black";
+    nodesx[x][y].draw();
+    startEnd=nodesx[x][y];
+    currentNode.visit2();
     sMap = setInterval(solveMap, 1000 / FPS);
 }
 
@@ -276,21 +278,22 @@ function move2(node){
 
 function solveMap(){
     if(currentNode===startEnd){
+        context.fillStyle = backColor;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        
+        nodesx.forEach(nodesy => {
+            nodesy.forEach(node =>{
+                if (node!=null){
+                    node.draw();
+                    node.drawPrevLines();
+                    if(node.path===true){
+                        node.drawPrevLines2();
+                    }
+                }
+            })
+        })
         clearInterval(sMap);
         return;
     }
-    context.fillStyle = backColor;
-    context.fillRect(0, 0, canvas.width, canvas.height);
     currentNode = move2(currentNode);
-    nodesx.forEach(nodesy => {
-        nodesy.forEach(node =>{
-            if (node!=null){
-                node.draw();
-                node.drawPrevLines();
-                if(node.path===true){
-                    node.drawPrevLines2();
-                }
-            }
-        })
-    })
 }
